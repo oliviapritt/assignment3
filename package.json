@@ -5,8 +5,7 @@
   "main": "index.html",
   "scripts": {
     "test": "npx serve .",
-    "start": "npx serve .",
-    "install": "npm install -D"
+    "start": "npx serve ."
   },
   "keywords": [
     "BrownCS1320",
