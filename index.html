@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Assignment2</title>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" crossorigin="anonymous"></script>
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+	</head>
+	<body>
+		<div class="navBar">
+			<div class="navigation" role="navigation">
+				<div id="skip"><a href="#tweet-container">Skip to Main Content</a></div>
+				<h1><span class="text5"><a href="#mycontent">Home</a></span></h1>
+				<span class="text4"><a href="#mycontent">Home</a></span>
+				<span class="text3"><a href="#mycontent">Ho...</a></span>
+				<span class="text2"><a href="#mycontent">...</a></span>
+				<h1><span class="text5"><a href="#moments">Moments</a></span></h1>
+				<span class="text4"><a href="#moments">Mome...</a></span>
+				<span class="text3"><a href="#moments">Mo...</a></span>
+				<span class="text2"><a href="#moments">...</a></span>
+				<h1><span class="text5"><a href="#notifications">Notifications</a></span></h1>
+				<span class="text4"><a href="#notifications">Notif...</a></span>
+				<span class="text3"><a href="#notifications">No...</a></span>
+				<span class="text2"><a href="#notifications">...</a></span>
+				<h1><span class="text5"><a href="#messages">Messages</a></span></h1>
+				<span class="text4"><a href="#messages">Mess...</a></span>
+				<span class="text3"><a href="#messages">Me...</a></span>
+				<span class="text2"><a href="#messages">...</a></span>
+			</div>
+			<div class="image1"><img src="./images/twitter-logo.png" alt="Twitter Logo" style="width:21px;height:18px;"></div>
+			<div class="navigation"><h1><button class="button">Tweet</button></h1></div>
+		</div>
+		<div class="content">
+			<div class="profile">
+				<div class="cover">
+					<img src="./images/penguin-banner.png" alt="Club Penguin's Twitter Banner" style="width:175px;height:75px;">
+				</div>
+				<div class="pic">
+					<div class="image3"><img src="./images/penguin.png" alt="Penguin's User Avatar" style="width:65px;height:65px;"></div>
+					<div class="handle">
+						<h1><div class="penguin">Penguin</div></h1>
+						<div class="penguin2">@penguin</div>
+					</div>
+				</div>
+				<div class="stats">
+					<div class="labels">
+						<h2><div class="word">Tweets</div></h2>
+						<div class="num">1279</div>
+					</div>
+					<div class="labels">
+						<h2><div class="word">Following</div></h2>
+						<div class="num">155</div>
+					</div>
+					<div class="labels">
+						<h2><div class="word">Followers</div></h2>
+						<div class="num">109k</div>
+					</div>
+				</div>
+			</div>
+			<div id="app">
+				<div id="tweet-container" role="main">
+					<div class="top">
+						<input type="text" onkeyup="myFilter()" id="search-term" placeholder="What are you looking for?">
+						<!-- <label class="toggle">
+							<input type="checkbox" onchange="handleToggle()" id="checkbox"> Stop updating
+						</label> -->
+					</div>
+				</div> 
+			</div>
+			<div class="follow">
+			  <h1><div class="whotofollow">Who to follow</div></h1>
+			  <div class="followbox">
+				  <div class="followthese">
+					<div class="col1">
+					  <div class="penguin6"><img src="./images/penguin.png" alt="Penguin's User Avatar" style="width:48px;height:48px;"></div>
+					</div>
+					  <div class="followcontent">
+						<div class="followhandle">
+						  <h2><div class="penguin4">Big Penguin</div></h2><div class="penguin5">@bigpenguin</div>
+						</div>
+						<button class="button2">Follow</button>
+					  </div>
+				  </div>
+				  <div class="followthese">
+					<div class="col1">
+					  <div class="penguin6"><img src="./images/penguin.png" alt="Penguin's User Avatar" style="width:48px;height:48px;"></div>
+					</div>
+					  <div class="followcontent">
+						<div class="followhandle">
+						  <h2><div class="penguin4">CS132TA</div></h2><div class="penguin5">@cs132ta</div>
+						</div>
+						<button class="button2">Follow</button>
+					  </div>
+				  </div>
+			  </div>
+			</div>
+		</div>
+		<!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+		<script type="text/javascript" src="index.js"></script>
+	</body>
+</html>
