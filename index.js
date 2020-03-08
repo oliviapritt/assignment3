@@ -1,17 +1,20 @@
-const url = "http://ec2-54-172-96-100.compute-1.amazonaws.com/feed/random?q=noodle";
+import TicTacToe from "./tic-tac-toe.js";
+import MadLibs from "./madlibs.js";
 
-// var intervalID = window.setInterval(getTweets, 5000);
+const url = "http://ec2-54-172-96-100.compute-1.amazonaws.com/feed/random?q=noodle";
 
 Vue.component('tweet', {
     props: {
+        'test': String,
         'profile_photo': String,
         'user_name': String,
         'created_at': String,
-        'text': String
+        'text': String,
+        'background_color': String
     },
     template: `
-        <div class="tweet">
-            <img class="profile-photo" :src="profile_photo" alt="user_name">
+        <div class="tweet" :style="background_color">
+            <img class="profile-photo" :src="profile_photo" alt="profile photo">
             <div class="tweet-text">
                 <div class="col2row1">
                     {{user_name}}
@@ -25,84 +28,120 @@ Vue.component('tweet', {
     `
 });
 
+Vue.component('feed', {
+    props: {
+        'tweet_objects': {
+            type: Array,
+            default: () => []
+        }
+    },
+    template: `
+        <div>
+            <div v-for="tweet_object in tweet_objects">
+                <tweet
+                :profile_photo="tweet_object.user.profile_image_url"
+                :user_name="tweet_object.user.name"
+                :created_at="tweet_object.created_at"
+                :text="tweet_object.text"
+                :background_color="tweet_object.style"></tweet>
+            </div>
+        </div>
+    `
+});
+
+Vue.component('search', {
+    methods: {
+        input_operation: function(event) {
+            console.log(event.target.value)
+            this.$emit('searchfilter', event.target.value)
+        }
+    },
+    template: `
+        <input type="search" placeholder="What are you looking for?" v-on:input="input_operation">
+    `
+});
+
+Vue.component('make-tweet', {
+    methods: {
+        input: function(event) {
+            console.log(event.target.value)
+            this.$emit('post', event.target.value)
+        }
+    },
+    template: `
+        <textarea placeholder="What's happening?" style="height:150px;width: 200px;max-width:200px;max-height:150px" v-on:input="input"></textarea>
+    `
+});
+
+const routes = [
+    { path: '/tictactoe', component: TicTacToe },
+    { path: '/madlibs', component: MadLibs }
+]
+  
+const router = new VueRouter({
+    routes
+})
+
 const app = new Vue({
     el: '#app',
     data: {
         tweetSet: new Set(),
-        tweetContainer: document.getElementById('tweet-container')
+        tweetList: [],
+        masterList: [],
+        myTweet: ""
     },
+    mounted() {
+        this.getTweets();
+        this.onScroll();
+    },
+    router,
     methods: {
-        // getTweets: function() {
-        //     fetch(url)
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         const tweets = data.statuses;
-        //         refreshTweets(tweets);
-        //         console.log(tweets);
-        //     })
-        //     .catch(err => {
-        //         console.log(err);
-        //     })
-        // },
-        // refreshTweets: function(tweets) {
-        //     let sorted = tweets.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-        //     sorted.forEach((tweetObject) => {
-        //         const tweet = document.createElement("div");
-        //         tweet.setAttribute("class", "tweet");
-        //         const tweetImage = document.createElement(
-        //         "img");
-        //         tweetImage.setAttribute("class", "profile-photo");
-        //         const defaultPhoto = "./images/no_photo.png";
-        //         tweetImage.setAttribute('src', tweetObject.user.profile_image_url_https);
-        //         tweetImage.setAttribute('alt', tweetObject.user.name + "'s profile photo");
-        //         tweetImage.setAttribute('onError', "this.onerror=null;this.src=\'" + defaultPhoto + "\';");
-        //         const tweetContent = document.createElement("div");
-        //         tweetContent.setAttribute("class", "tweet-text");
-        //         const tweetDivOne = document.createElement("div");
-        //         tweetDivOne.setAttribute("class", "col2row1");
-        //         const tweetDivTwo = document.createElement("div");
-        //         tweetDivTwo.setAttribute("class", "col2row2");
-        //         const tweeterName = document.createTextNode(tweetObject.user.name + "  " + moment(tweetObject.created_at).format("LLL"));
-        //         const tweetText = document.createTextNode(tweetObject.text);
-        //         tweetDivOne.appendChild(tweeterName);
-        //         tweetDivTwo.appendChild(tweetText);
-        //         tweetContent.appendChild(tweetDivOne);
-        //         tweetContent.appendChild(tweetDivTwo);
-        //         tweet.appendChild(tweetImage);
-        //         tweet.appendChild(tweetContent);
-        //         if (!tweetSet.has(tweetObject.id)) {
-        //             tweetContainer.appendChild(tweet);
-        //             tweetSet.add(tweetObject.id)
-        //         }
-        //     });
-        //     myFilter();
-        // }
-    }
-})
-
-function myFilter() {
-    input = document.getElementById("search-term");
-    filter = input.value.toLowerCase();
-    var childDivs = tweetContainer.getElementsByClassName("tweet");
-    for( i = 0; i < childDivs.length; i++ ) {
-        var childDiv = childDivs[i];
-        textValue = childDiv.textContent || childDiv.innerText;
-        if (textValue.toLowerCase().indexOf(filter) > -1) {
-            childDiv.style.display = "";
-        } else {
-            childDiv.style.display = "none";
+        getTweets: function() {
+            fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                const tweets = data.statuses;
+                for (const tweetObject of tweets) {
+                    if (!this.tweetSet.has(tweetObject.id)) {
+                        this.masterList.push(tweetObject);
+                        this.tweetList.push(tweetObject);
+                        this.tweetSet.add(tweetObject.id)
+                    }
+                };
+                this.sort();
+                console.log(this.tweetList);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        },
+        onSearch: function(input) {
+            console.log(input)
+            this.tweetList = this.masterList.filter(tweet => tweet.text.toLowerCase().includes(input.toLowerCase()));
+        },
+        onPost: function(tweet) {
+            this.myTweet = tweet;
+        },
+        onClick: function() {
+            let tweet = {style: "background-color: lightcyan", text: this.myTweet, created_at: new Date(), user: {name: "Penguin", profile_image_url: "./images/penguin.png"}
+            }
+            this.masterList.push(tweet);
+            this.tweetList.push(tweet);
+            this.sort();
+        },
+        sort: function() {
+            this.masterList.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            this.tweetList.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        },
+        onScroll: function() {
+            window.addEventListener('scroll', 
+                this.update
+            );
+        },
+        update: function() {
+            if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+                this.getTweets();
+            }
         }
     }
-}
-
-// function handleToggle() {
-//     console.log("handle toggle")
-//     var checkBox = document.getElementById("checkbox");
-//     if (checkBox.checked) {
-//         console.log("stopping")
-//         window.clearInterval(intervalID);
-//     } else {
-//         console.log("starting")
-//         intervalID = window.setInterval(getTweets, 5000);
-//     }
-// }
+})
