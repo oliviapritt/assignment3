@@ -92,7 +92,7 @@ export default {
         }
     },
     template: `
-        <div id="main" role="main" >
+        <div id="main" role="main">
             <button id="reset" v-on:click="handleReset" role="button">Reset</button>
             <div id="left">
                 <inputs :user_inputs="user_inputs" :num_fields="num_fields" v-on:message-pass="onMessageReceived"></inputs>
